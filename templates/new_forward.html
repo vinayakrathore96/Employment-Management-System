@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Start a New Topic{% endblock %}
+
+{% block breadcrumb %}
+ 
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'project' %}">Projects</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'project_updates' task.pk %}">{{ task.project.name }}</a></li>
+        <li class="breadcrumb-item active">New Forward</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+      <tr>
+          <td>{{ form.acceptor_department | as_crispy_field }}</td>
+      </tr>
+      <tr>
+          <td>{{ form.documents | as_crispy_field }}</td>
+      </tr>
+      <tr>
+        <td>{{ form2.outcome | as_crispy_field }}</td>
+    </tr>
+    <tr>
+        <td>{{ form2.pending | as_crispy_field }}</td>
+    </tr>
+    <tr>
+      <td>{{ form2.message | as_crispy_field }}</td>
+  </tr>
+  <tr>
+      <td>{{ form2.comments | as_crispy_field }}</td>
+  </tr>
+  </table>
+
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>
+{% endblock %}

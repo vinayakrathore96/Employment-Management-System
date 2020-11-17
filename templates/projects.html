@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Projects</li>
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Projects</th>
+        <th>Last Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+        <tr>
+          <td>
+            <a href="{% url 'project_updates' project.pk %}">{{ project.name }}</a>
+            <small class="text-muted d-block">{{ project.description }}</small>
+          </td>
+          <td class="align-middle">
+            {% with update=project.get_last_update %}
+  {% if update %}
+    <small>
+      <a href="#">
+        By {{ update.created_by.username }} at {{update.created_at }}
+      </a>
+    </small>
+  {% else %}
+    <small class="text-muted">
+      <em>No Updates yet.</em>
+    </small>
+  {% endif %}
+{% endwith %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

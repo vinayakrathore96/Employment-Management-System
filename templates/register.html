@@ -1,0 +1,51 @@
+{% extends 'Login.html' %}
+{% block body %}
+<div class="container">
+    <br>
+    <h3>Registration</h3>
+    <hr>
+    <form action="/register/" method="post">
+        {% csrf_token %}
+        <table class="table table-striped">
+            <tr>
+                <td>Username : </td>
+                <td>{{form.username}}</td>
+            </tr>
+            <tr>
+                <td>FirstName : </td>
+                <td>{{form.first_name}}</td>
+            </tr>
+            <tr>
+                <td>LastName : </td>
+                <td>{{form.last_name}}</td>
+            </tr>
+            <tr>
+                <td>Email : </td>
+                <td>{{form.email}}</td>
+            </tr>
+            <tr>
+               <td> <p>Password :</p> <ul>
+
+                    <li>Your password can't be too similar to your other personal information.</li>
+
+                    <li>Your password must contain at least 8 characters.</li>
+
+                    <li>Your password can't be a commonly used password.</li>
+
+                    <li>Your password can't be entirely numeric.</li>
+
+    
+
+                </ul> </td>
+                <td>{{form.password1}}</td>
+            </tr>
+            <tr>
+                <td>Password Confirmation : </td>
+                <td>{{form.password2}}</td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+{% endblock %}

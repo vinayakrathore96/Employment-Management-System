@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Start a New Topic{% endblock %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'project' %}">Projects</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'project_updates' task.pk %}">{{ task.project.name }}</a></li>
+            <li class="breadcrumb-item active">New Update</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>{{ form.outcome | as_crispy_field }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.pending | as_crispy_field }}</td>
+    </tr>
+    <tr>
+      <td>{{ form.message | as_crispy_field }}</td>
+  </tr>
+  <tr>
+      <td>{{ form.comments | as_crispy_field }}</td>
+  </tr>
+  </table>
+
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>
+{% endblock %}

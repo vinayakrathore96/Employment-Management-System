@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Leaves</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<ul class="pagination" style="padding-top: 5px;" >
+  <li class="page-item ml-auto"><a class="page-link" href="{% url 'apply_leave' %}">Apply Now</a></li>
+</ul>
+
+  <table class="table" id = "table-search">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Username</th>
+        <th>Action</th>
+        <th>Leave Date</th>        
+      </tr>
+    </thead>
+    <tbody>
+      {% for leave in leaves %}  
+        <tr>
+          <td>
+            <a href="#">{{ leave.user.username }}</a>
+            <small class="text-muted d-block">{{ leave.subject }}</small>
+          </td>   
+
+          <td>
+            {% if leave.leave_status == 3 %}
+            <a href="{% url 'see_leave' leave.pk %}">See Request</a>
+            {% elif leave.leave_status == 0 %}
+            <p>Accepted</p>
+            {% elif leave.leave_status == 1 %}
+            <p>Rejected</p>
+            {% endif %}
+            </td>
+
+          <td>
+            <p>{{ leave.leave_date }}</p>
+          </td>
+
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

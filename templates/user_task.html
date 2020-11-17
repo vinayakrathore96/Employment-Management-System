@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Projects</li>
+
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container" >
+  <table class="table table-hover" id="table-search">
+    <thead class="thead-light">
+      <tr>
+        <th>Projects</th>
+        <th>Forwarded</th>
+        <th>Project DeadLine</th>
+        <th>User DeadLine</th>
+
+      </tr>
+    </thead>
+    {% if user.profile.is_manager %}
+    <ul class="pagination" style="padding-top: 5px;" >
+        <li class="page-item">
+            <a class="page-link" href="{% url 'new_project' %}">New Project</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="{% url 'pending_requests' '1' %}">Pending Forwards</a>
+        </li>
+        {% if user.profile.is_manager %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'accepting_requests' %}">Pending Requests</a>
+        </li>
+        {% endif %}
+        {% if user.profile.is_super_manager %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'see_completed_projects' %}">Completed Projects</a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+      {% for task in tasks.all.reverse %}
+      {% if task.current_forwarder.acceptor_manager_approval != 0 %}
+      {% with project=task.project %}
+        <tr>
+          <td>
+            <a href="{% url 'project_updates' task.pk %}">{{ project.name }}</a>
+            <small class="text-muted d-block">{{ project.description }}</small>
+          </td>
+
+
+          <td>
+
+            {% if task.current_forwarder.acceptor_manager_approval == 1 %}
+            <p>Request was Rejected by accepting department manager</p>
+            <hr>
+            <a href="{% url 'forward_request' project.pk task.pk %}" class="btn btn-primary">Forward</a>
+
+            {% elif task.current_forwarder.acceptor_manager_approval == 0 %}
+            <p>Forwarding Done</p>
+
+            {% elif task.current_forwarder.request_manager_approval == 0 %}
+            <p>Request Sent to Accepting Department</p>
+
+            {% elif task.current_forwarder.request_manager_approval == 1 %}
+            <p>Request was Rejected by your department manager</p>
+
+            {% elif task.request_forward and task.current_forwarder.request_manager_approval == 3 %}
+            {% if user.profile.is_manager %}
+            <a href="{% url 'cancel_forward_request' project.pk task.pk %}">Reject Forward Request</a>
+            {% else %}
+            <a href="{% url 'cancel_forward_request' project.pk task.pk %}">Cancel Forward Request</a>
+            {% endif %}
+
+            {% else %}
+            <a href="{% url 'forward_request' project.pk task.pk %}" class="btn btn-primary" role="button">Forward</a>
+            {% endif %}
+
+          </td>
+
+          <td>
+            <p>{{ project.deadline }}</p>
+          </td>
+
+
+
+          <td>
+            <p>{{ task.task_deadline }}</p>
+          </td>
+
+        </tr>
+        {% endwith %}
+        {% endif %}
+      {% endfor %}
+
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Start a New Topic{% endblock %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'project' %}">Projects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">New Project</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="container" style="margin-top: 10px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.name | as_crispy_field }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.description | as_crispy_field }}</td>
+        </tr>
+    </table>
+    {% if user.profile.is_super_manager  %}
+    <label> Select Department </label>
+    <select name="department-assigned" id="department-assigned">
+    {% for employee in employees %}
+    {% if employee.profile.department.superdepartment == user.profile.department and employee.profile.is_manager %}
+    <option value="{{ employee }}">{{ employee.profile.department }}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+  {% else %}
+  <label for="employees">Select Employees </label>
+  <br>
+  <select name="employees" id="option{{employee.username}}" multiple>
+  {% for employee in employees %}
+  {% if employee.profile.department == user.profile.department %}
+  <option value="{{employee}}" {% if employee.profile in task.employee.all %} selected {% endif %}>{{employee.username}}</option>
+  {% endif %}
+    {% endfor %}
+    {% endif %}
+
+  </select>
+  <br><br>
+    <p style="display: inline-block">DeadLine</p>
+    <input type="date" name="deadline">
+  <br>
+    <p style="display: inline-block">User DeadLine</p>
+    <input type="date" name="userdeadline">
+  <br>
+
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>
+{% endblock %}

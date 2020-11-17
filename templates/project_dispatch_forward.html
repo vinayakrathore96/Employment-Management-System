@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Start a New Topic{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">{{project.name}}</li>
+{% endblock %}
+
+{% block content %}
+  <form method="post" action="{% url 'update_dispatch' project.pk %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label> Select Employees </label>
+    {% for employee in employees %}
+    {% if employee.profile.department == user.profile.department %}
+
+    <input type="checkbox" name="employees" id="option{{employee.username}}" value={{employee}} />
+    <label for="option{{employee.username}}" {% if employee in task.employee.all %} selected {% endif %}><b>{{employee.username}}</b></label><br />
+
+    {% endif %}
+    {% endfor %}
+
+  </select>
+  <br><br>
+    <p>User DeadLine</p>
+    <input type="date" name="userdeadline">
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page">Profile</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="bg-1 col-sm-3">
+            {% if user.profile.image.url is not Null %}
+                <img src="{{ user.profile.image.url }}"
+                     class="rounded border border-secondary"
+                     width="200"
+                     height="auto"
+                     alt="photo"
+                     style="margin-left: 20px"
+                >
+                {% endif %}
+
+        </div>
+        <div class="col-sm-9">
+            <h1 style="display: inline-block"><small>Profile</small></h1>
+            <small class="float-right" style="opacity: 70%"><b>Department</b>({{user.profile.department}})</small>
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                  <td>Username</td>
+                  <td>{{user.username}}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{user.first_name}} {{user.last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{user.email}}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{userprofile.address}}</td>
+                </tr>
+                <tr>
+                    <td>Contact</td>
+                    <td>{{userprofile.contact_number}}</td>
+                </tr>
+                <tr>
+                    <td>Date Of Birth</td>
+                    <td>{{userprofile.date_of_birth}}</td>
+                </tr>
+                <tr>
+                  <td>Father's Name</td>
+                  <td>{{userprofile.fathers_name}}</td>
+                </tr>
+                <tr>
+                    <td>Education</td>
+                    <td>{{userprofile.education}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="/home/profile/edit_profile/">Edit Profile</a></li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

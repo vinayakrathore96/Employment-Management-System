@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Start a New Topic{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Assign Task</li>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form method="post" action="{% url 'new_dispatch' task.pk %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if user.profile.is_super_manager  %}
+    <label> Select Department </label>
+    <hr>
+    <select name="department-assigned" id="department-assigned">
+    {% for employee in employees %} 
+    {% if employee.profile.department.superdepartment == user.profile.department and employee.profile.is_manager %}
+    <option value="{{employee}}" {% if employee.profile in task.employee.all %} selected {% endif %} >{{employee.profile.department}}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+    {% else %}
+    <label for="employees">Select Employees </label>
+    <select name="employees" id="option{{employee.username}}" multiple>
+    {% for employee in employees %}
+    {% if employee.profile.department == user.profile.department %}
+    <option value="{{employee}}" {% if employee.profile in task.employee.all %} selected {% endif %}>{{employee.username}}</option>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
+
+  </select>
+  </select>
+  <br><br>
+    <p>User DeadLine</p>
+    <input type="date" name="userdeadline">
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>
+{% endblock %}

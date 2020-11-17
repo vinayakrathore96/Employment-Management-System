@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'project' %}">Projects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Project Requests</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+<div class="container" style="padding-top: 10px;">
+  <table class="table" id = "table-search">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Projects</th>
+        <th>Action</th>
+        <th>Project DeadLine</th>
+        <th>User DeadLine</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for forward in forward_requests %}
+      {% with task=forward.task%}
+      {% with project=task.project %}
+        <tr>
+          <td>
+            <p>{{ project.name }}</p>
+            <small class="text-muted d-block">{{ project.description }}</small>
+          </td>
+
+
+          <td>
+            <a href="{% url 'see_request' project.pk task.pk %}">See Request</a>
+          </td>
+
+          <td>
+            <p>{{ project.deadline }}</p>
+          </td>
+
+
+
+          <td>
+            <p>{{ task.task_deadline }}</p>
+          </td>
+
+        </tr>
+        {% endwith %}
+        {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

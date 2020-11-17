@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Apply For Leave{% endblock %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'leave_home' %}">Leaves</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Apply For Leave</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.subject | as_crispy_field }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.leave_date | as_crispy_field }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.body | as_crispy_field }}</td>
+        </tr>
+    </table>
+    <script>
+      $(function () {
+        $("#id_leave_date").datepicker({
+          format:'yyyy-mm-dd',
+        });
+      });
+    </script>
+    <button type="submit" class="btn btn-success">Apply</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <div class="card mb-2 container" style="margin-top: 50px; padding-bottom: 50px;">
+      <label for="">Subject : </label>
+      <p>{{leave.subject}}</p>
+
+      <label for="">Body : </label>
+      <p>{{leave.body}}</p>
+
+      <label for="">Current Status : </label>
+      {% if leave.leave_status == 0 %}
+        <p>Accepted</p>
+      {% elif leave.leave_status == 1 %}
+        <p>Rejected</p>
+      {% elif leave.leave_status == 3 %}
+        <p>Unseen</p>
+      {% endif %}
+      
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Done</button>
+      </form>
+  </div>
+{% endblock %}

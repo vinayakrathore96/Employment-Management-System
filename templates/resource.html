@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Shared Resource</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+    {% if user.is_superuser or user.profile.is_manager %}
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="{% url 'new_shared_resource' %}">Add New Resource</a></li>
+    </ul>
+    {% endif %}
+    <table class="table table-hover" id="table-search">
+        <thead class="thead-light">
+        <tr>
+            <th>Title</th>
+            <th>Notice</th>
+            <th>Download File</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.title }}</td>
+            <td>{{ resource.notice }}</td>
+            {% if resource.files %}
+            <td><a href="{{ resource.files.url }}">{{ resource.files }}</a></td>
+            {% else %}
+            <td>No file attached</td>
+            {% endif %}
+            <td>{{ resource.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

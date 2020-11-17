@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'project' %}">Projects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Pending Forwards</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <table class="table" id = "table-search">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Projects</th>
+        <th>Action</th>
+        <th>Project DeadLine</th>
+        <th>User DeadLine</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}  
+      {% if task.request_forward and task.current_forwarder.request_manager_approval == 3 %} 
+      {% with project=task.project %}
+        <tr>
+          <td>
+            <a href="{% url 'project_updates' task.pk %}">{{ project.name }}</a>
+            <small class="text-muted d-block">{{ project.description }}</small>
+          </td>
+    
+
+          <td>
+            <a href="{% url 'see_request' project.pk task.pk %}">See Request</a>
+          </td>
+
+          <td>
+            <p>{{ project.deadline }}</p>
+          </td>
+
+
+
+          <td>
+            <p>{{ task.task_deadline }}</p>
+          </td>
+
+        </tr>
+        {% endwith %}
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

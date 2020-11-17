@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{% url 'profile' %}">Profile</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <h1><small>Edit Profile</small></h1>
+  <br>
+  <hr>
+
+            <form action="/home/profile/edit_profile/" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <p>{{form.username|as_crispy_field}}</p>
+              <hr>
+
+              <p>{{form.first_name|as_crispy_field}}</p>
+              <hr>
+
+              <p>{{form.last_name|as_crispy_field}}</p>
+              <hr>
+              <p>{{form.email|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.contact_number|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.fathers_name|as_crispy_field}}</p>
+              <hr>
+
+              <p>{{profile_form.date_of_birth|as_crispy_field}}</p>
+              <hr>
+
+              <p>{{profile_form.address|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.image|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.aadhar_number|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.pan_number|as_crispy_field}}</p>
+              <hr>
+              <p>{{profile_form.education|as_crispy_field}}</p>
+
+
+              <button type="submit" class="btn btn-primary">Save changes</button>
+              {% for message in messages%}
+              <h4 class="text-info"><small>{{ message }}</small></h4>
+              {% endfor %}
+            </form>
+          </div>
+
+
+<script>
+  $(function () {
+    $("#id_date_of_birth").datepicker({
+      format: 'yyyy-mm-dd',
+    });
+  });
+</script>
+
+{% endblock %}

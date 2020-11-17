@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Employees List</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <form action="{% url 'deactivate_user' %}" method="post">
+        {% csrf_token %}
+        {% if user.profile.is_super_manager %}
+        <button type="submit"
+                class="btn btn-danger"
+                id="selection"
+                style="margin: 5px ;
+                float: right">Remove Employees</button>
+        <br>
+        <br>
+        <br>
+        {% endif %}
+
+        <table class=" table table-hover" id="table-search">
+            <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for list in lists %}
+            
+            {% if list.is_active %}
+            <tr>
+                <td><input type="checkbox" name="employees" value="{{list.id}}">
+                <td>{{ list.id }}</td>
+                <td>{{ list.first_name }} {{ list.last_name }}</td>
+                <td>{{ list.email }}</td>
+                <td>{{ list.profile.department }}</td>
+
+            </tr>
+            
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+<!--
+<script>
+    $(document).ready(function() {
+            $('#table-search').DataTable({
+
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                order: [[1, 'asc']]
+            });
+        });
+
+</script>
+-->
+{% endblock %}

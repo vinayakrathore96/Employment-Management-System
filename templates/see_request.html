@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ topic.subject }}{% endblock %}
+s
+{% block breadcrumb %}
+{% with topic=task.project %}
+<nav class="navbar navbar-light navbar-expand-sm" style="background-color: #e9ecef;">
+  <ul class="navbar-nav col">
+  <li class="breadcrumb-item nav-item" style="display: inline-block;"><a href="{% url 'project' %}">Projects</a></li>
+  <li class="breadcrumb-item active nav-item" style="display: inline-block;"><a href="{% url 'project_updates' task.pk %}">{{ topic.name }}</a></li>
+  <li class="breadcrumb-item active nav-item" style="display: inline-block;">See Request</li>
+</ul>
+</nav>
+  {% endwith %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+{% with topic=task.project %}
+{% with post=task.current_forwarder.update %}
+
+<nav class="navbar navbar-expand-sm bg-light navbar-dark">
+  <ul class="navbar-nav col">
+ <li class="nav-item" style="margin-right: 20px">
+    <a href="{% url 'new_update' task.pk %}" class="btn btn-primary"  role="button">Post an Update</a>
+  </li>
+ <li class="nav-item">
+   {% if task.current_forwarder.acceptor_department == user.profile.department or task.current_forwarder.requesting_department == user.profile.department  %} 
+  <a href="{% url 'approve_forward_request' topic.pk task.pk %}" class="btn btn-primary" role="button">Approve</a>
+  {% endif %}
+</li>
+<li>
+  {% if user.profile.is_manager or user.profile.is_supermanager %}
+  <a href="{% url 'cancel_forward_request' topic.pk task.pk %}" class="btn btn-primary" style="margin-left: 10px;">Reject Forward Request</a>
+  {% else %}
+  <a href="{% url 'cancel_forward_request' topic.pk task.pk %}" class="btn btn-primary" style="margin-left: 10px;">Cancel Forward Request</a>
+  {% endif %}
+</li>
+</ul>
+</nav>
+<div class="col-6">
+              
+    <h2 class="text-muted"><small>Requested by : {{ post.created_by.user }}</small></h2>
+  </div>
+<div class="col-6">
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapse{{ post.created_by.user }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+      See Corresponding updates
+    </a>
+  </div>
+<div class="collapse" id="collapse{{ post.created_by.user }}">
+    <table class="table-strip table">
+    <tr>  <td>Update Statement(s)</td>
+    <td><pre>{{ post.message }}</pre></td>
+    </tr>
+    <tr>  <td>Outcome</td>
+      <td><pre>{{post.outcome}} </pre></td>
+    </tr>
+    <tr>  <td>Pending</td>
+      <td><pre>{{ post.pending }} </pre></td>
+    </tr>
+    <tr>  <td>Comment(s)</td>
+      <td><pre>{{ post.comments }} </pre></td>
+    </tr>
+    </table>
+    </div>
+
+    <table class="table-strip table">
+        <tr>  <td>Acceptor Department</td>
+        <td><pre>{{ task.current_forwarder.acceptor_department.name }}</pre></td>
+        </tr>
+        <tr>  <td>Documents</td>
+          {% if task.current_forwarder.documents %}
+          <td><pre><a href="{{ task.current_forwarder.documents.url }}">{{task.current_forwarder.documents}} </a></pre></td>
+          {% endif %}
+        </tr>
+        </table>
+
+{% endwith %}
+{% endwith %}
+</div>
+{% endblock %}
